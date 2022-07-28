@@ -1,4 +1,12 @@
-import { extend, render, useExtensionInput, BlockStack, Button, Heading, Image } from '@shopify/post-purchase-ui-extensions-react';
+import {
+    extend,
+    render,
+    useExtensionInput,
+    BlockStack,
+    Button,
+    Heading,
+    Image
+} from '@shopify/post-purchase-ui-extensions-react';
 
 async function fetchPostPurchaseData() {
     // This is where you would make a request to your app server to fetch the data
@@ -8,16 +16,21 @@ async function fetchPostPurchaseData() {
     };
 }
 
-extend('Checkout::PostPurchase::ShouldRender', async () => {
-  return { render : true };
+extend('Checkout::PostPurchase::ShouldRender', async ({storage}) => {
+    const postPurchaseData = await fetchPostPurchaseData()
+    await storage.update(postPurchaseData)
+    return {render: true};
 });
-render('Checkout::PostPurchase::Render', () => <App />);
+render('Checkout::PostPurchase::Render', () => <App/>);
+
 export function App() {
-  const {done} = useExtensionInput();
-  return (
-    <BlockStack spacing="loose" alignment="center">
-      <Heading>My first post-purchase extension</Heading>
-      <Button submit onPress={done}>Click me</Button>
-    </BlockStack>
-  )
+    const {done, storage} = useExtensionInput();
+    const {productTitle, productImageURl} = storage.initialData()
+    return (
+        <BlockStack spacing="loose" alignment="center">
+            <Heading>{productTitle}</Heading>
+            <Image source={productImageURl}/>
+            <Button submit onPress={done}>Click me</Button>
+        </BlockStack>
+    )
 }
