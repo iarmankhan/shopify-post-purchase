@@ -45,24 +45,24 @@ app.get("/offer", async (req, res) => {
         }
     `;
 
-    console.log("Product ID: ", process.env.PRODUCT_ID);
+    // console.log("Product ID: ", process.env.PRODUCT_ID);
 
     const result = await graphQLClient.request(query, {
         productId: `gid://shopify/Product/${process.env.PRODUCT_ID}`,
     });
 
     const product = result.product;
-    console.log(product)
+    // console.log(product)
 
     const variant = result.product?.variants?.edges[0].node;
 
     const initialData = {
         variantId: variant?.id?.split("gid://shopify/ProductVariant/")[1],
-        productTitle: product.title,
-        productImageURL: product.featuredImage.url,
-        productDescription: product.descriptionHtml.split(/<br.*?>/),
-        originalPrice: variant.compareAtPrice,
-        discountedPrice: variant.price
+        productTitle: product?.title,
+        productImageURL: product?.featuredImage.url,
+        productDescription: product?.descriptionHtml.split(/<br.*?>/),
+        originalPrice: variant?.compareAtPrice,
+        discountedPrice: variant?.price
     };
 
     res.send(initialData);
