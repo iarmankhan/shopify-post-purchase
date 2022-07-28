@@ -34,7 +34,7 @@ export function App() {
     const [loading, setLoading] = React.useState(true)
     const [calculatedPurchase, setCalculatedPurchase] = React.useState()
 
-    React.useEffect(() => {
+    React.useEffect(async () => {
         async function calculatePurchase() {
             const result = await calculateChangeset({changes})
 
@@ -42,14 +42,13 @@ export function App() {
             setLoading(false)
         }
 
-        calculatePurchase()
+        await calculatePurchase()
     }, [])
 
     const {variantId, productTitle, productImageURL, productDescription} = storage.initialData
 
     const changes = [{type: 'add_variant', variantId, quantity: 1}]
 
-    // Extracting Price Values from calculatedPurchase
     const shipping = calculatedPurchase?.addedShippingLines[0]?.priceSet?.presentmentMoney?.amount
     const taxes = calculatedPurchase?.addedTaxLines[0]?.priceSet?.presentmentMoney?.amount
     const total = calculatedPurchase?.totalOutstandingSet?.presentmentMoney?.amount
@@ -80,7 +79,6 @@ export function App() {
         setLoading(true)
         done()
     }
-
 
     return (
         <BlockStack spacing="loose">
@@ -117,7 +115,6 @@ export function App() {
                         loading={!calculatedPurchase}
                     />
                     <ProductDescription textLines={productDescription}/>
-
                     <BlockStack spacing="tight">
                         <Separator/>
                         <MoneyLine label="Subtotal" amount={discountedPrice} loading={!calculatedPurchase}/>
@@ -134,7 +131,6 @@ export function App() {
                     </BlockStack>
                 </BlockStack>
             </Layout>
-
         </BlockStack>
     )
 }
