@@ -27,6 +27,12 @@ Once the app is served, copy the extension url and paste in the post-purchase Ch
 ### env file
 Create the `.env` file from provided `.env.sample`, fill out all the information.
 
+For `SHOPIFY_API_KEY` and `SHOPIFY_API_SECRET`, navigate to partner admin page, and go to apps section, there select you app, this will lead to a new page where API Key and API secret key will be available.
+For `SHOPIFY_ACCESS_TOKEN`, navigate to store admin page, go to settings, then apps and sales channel, then under Build custom apps for your unique needs, click on Develop app for your store. After that, allow custom app development. Then click on Create an app. Then click on configuration, configure the Admin API Integration, select all scope for now and save it, then go to api credential tab and install it and you will get your access_token.
+`DEV_STORE` will be your development store name
+`PRODUCT_ID` will be the id of product to show on post purchase page.
+
+
 ### Starting the development server
 In the root folder
 ```shell
